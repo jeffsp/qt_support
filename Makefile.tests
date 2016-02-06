@@ -1,0 +1,41 @@
+# Tests Makefile
+#
+# Copyright (C) 2011 Jeffrey S. Perry
+#
+# contact: jeffsp@gmail.com
+
+.SUFFIXES:
+.PHONY: all check clean release
+
+# You must define TARGETS before you include this make file
+DUMMY_TARGETS=$(addsuffix .dummy,$(TARGETS))
+CHECK_TARGETS=$(addsuffix .check,$(TARGETS))
+CLEAN_TARGETS=$(addsuffix .clean,$(TARGETS))
+MAKE_FILES=$(addsuffix .Makefile,$(TARGETS))
+PRO_FILES=$(addsuffix .pro,$(TARGETS))
+QTFLAGS=CONFIG+=debug CONFIG-=qt
+
+all: $(DUMMY_TARGETS) $(MAKE_FILES) $(PRO_FILES)
+
+%.dummy: %.Makefile
+	$(MAKE) -f $<
+
+%.Makefile: %.pro
+	qmake -o $@ $< $(QTFLAGS) INCLUDEPATH+="$(INCLUDEPATH)" DEPENDPATH+="$(DEPENDPATH)" SOURCES+="$(EXTRA_SOURCES)" LIBS+="$(LIBS)" QMAKE_CXXFLAGS+=-fopenmp QMAKE_CXXFLAGS+=-std=c++0x OBJECTS_DIR+=obj
+
+%.pro: Makefile
+	qmake -project -nopwd -o $*.pro $*.cc
+
+check: all $(CHECK_TARGETS)
+
+%.check:
+	./$*
+
+clean: $(CLEAN_TARGETS)
+	rm -f *.o $(TARGETS) $(PRO_FILES) $(MAKE_FILES)
+
+%.clean:
+	-$(MAKE) -f $*.Makefile clean
+
+release:
+	$(MAKE) "QTFLAGS=CONFIG+=release DEFINES+=NDEBUG CONFIG-=qt"
