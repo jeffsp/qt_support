@@ -1,6 +1,8 @@
 # QT Support
 
-Makefile support for QT-style apps
+Makefiles for apps that use qmake.
+
+Support exists for QT GUI and non-QT command line apps.
 
 These files get included from other makefiles after TARGETS, SRCS, ..., etc. get defined.
 
