@@ -21,7 +21,7 @@ $(MAKE_FILE): $(PRO_FILE)
 	qmake -o $@ $< $(QTFLAGS) INCLUDEPATH+="$(INCLUDEPATH)" DEPENDPATH+="$(DEPENDPATH)" SOURCES+="$(EXTRA_SOURCES)" LIBS+="$(LIBS)" OBJECTS_DIR+=obj
 
 %.pro: Makefile
-	qmake -project -nopwd -o $*.pro $*.cc
+	qmake -project -nopwd -o $*.pro $*.cc QMAKE_CXXFLAGS+=-std=c++11
 
 $(MAN_FILE): $(GROFF_FILE)
 	groff -man -Tascii $(GROFF_FILE) | gzip -c > $(MAN_FILE)

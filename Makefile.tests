@@ -21,7 +21,7 @@ all: $(DUMMY_TARGETS) $(MAKE_FILES) $(PRO_FILES)
 	$(MAKE) -f $<
 
 %.Makefile: %.pro
-	qmake -o $@ $< $(QTFLAGS) INCLUDEPATH+="$(INCLUDEPATH)" DEPENDPATH+="$(DEPENDPATH)" SOURCES+="$(EXTRA_SOURCES)" LIBS+="$(LIBS)" QMAKE_CXXFLAGS+=-fopenmp QMAKE_CXXFLAGS+=-std=c++0x OBJECTS_DIR+=obj
+	qmake -o $@ $< $(QTFLAGS) INCLUDEPATH+="$(INCLUDEPATH)" DEPENDPATH+="$(DEPENDPATH)" SOURCES+="$(EXTRA_SOURCES)" LIBS+="$(LIBS)" QMAKE_CXXFLAGS+=-fopenmp QMAKE_CXXFLAGS+=-std=c++11 OBJECTS_DIR+=obj
 
 %.pro: Makefile
 	qmake -project -nopwd -o $*.pro $*.cc
